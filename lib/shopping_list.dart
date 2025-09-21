@@ -7,11 +7,12 @@ class ShoppingList {
     return data.keys.toSet();
   }
 
-  void addToShoppingList(String name) {
+  void reverseStateInList(String name) {
     if (data.containsKey(name)) {
-      return;
+      data.remove(name);
+    } else {
+      data[name] = false;
     }
-    data[name] = false;
   }
 
   void dropList() {
@@ -30,6 +31,9 @@ class ShoppingList {
   }
 
   bool inCart(String name) {
+    if (!data.containsKey(name)) {
+      return false;
+    }
     return data[name]!;
   }
 

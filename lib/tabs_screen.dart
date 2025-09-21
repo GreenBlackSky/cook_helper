@@ -8,28 +8,24 @@ class TabsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            bottom: const TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.menu_book)),
-                Tab(icon: Icon(Icons.home)),
-                Tab(
-                  icon: Icon(Icons.shopping_cart),
-                )
-              ],
-            ),
-          ),
-          body: const TabBarView(
-            children: [
-              RecipiesView(),
-              IngredientsView(),
-              ShoppingListView(),
+    return const DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.menu_book)),
+              Tab(icon: Icon(Icons.home)),
+              Tab(
+                icon: Icon(Icons.shopping_cart),
+              )
             ],
           ),
+        body: TabBarView(
+          children: [
+            RecipiesView(),
+            IngredientsView(),
+            ShoppingListView(),
+          ],
         ),
       ),
     );

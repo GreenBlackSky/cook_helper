@@ -7,17 +7,15 @@ class IngredientsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Ingredients')),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: PANTRY.getAllNames().map((entry) {
-                return IngredientCard(entry);
-              }).toList(),
-            ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Ingredients')),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: PANTRY.getAllNames().map((entry) {
+              return IngredientCard(entry);
+            }).toList(),
           ),
         ),
       ),

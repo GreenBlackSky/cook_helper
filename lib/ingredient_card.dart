@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pantry.dart';
+import 'shopping_list.dart';
 
 class IngredientCard extends StatefulWidget {
   final String ingredient;
@@ -11,20 +12,50 @@ class IngredientCard extends StatefulWidget {
 }
 
 class _IngredientCardState extends State<IngredientCard> {
-  Widget getBetterStockWidget(bool betterStock) {
-    if (betterStock) {
+  Widget getBetterStockIcon() {
+    if (PANTRY.betterStock(widget.ingredient)) {
       return const Icon(Icons.home);
     } else {
       return const Icon(Icons.store);
     }
   }
 
-  Widget getHasAtHomeIcon(bool hasAtHome) {
-    if (hasAtHome) {
-      return const Icon(Icons.done, color: Colors.green);
+  Widget getShoppingCartButton() {
+    Icon icon;
+    if (SHOPPING_LIST.inList(widget.ingredient)) {
+      icon = const Icon(
+        Icons.shopping_cart,
+        color: Colors.blue,
+      );
     } else {
-      return const Icon(Icons.close, color: Colors.red,);
+      icon = const Icon(Icons.shopping_cart);
     }
+    return IconButton(
+        onPressed: () {
+          setState(() {
+            SHOPPING_LIST.reverseStateInList(widget.ingredient);
+          });
+        },
+        icon: icon);
+  }
+
+  Widget getHasAtHomeButton() {
+    Icon icon;
+    if (PANTRY.haveAtHome(widget.ingredient)) {
+      icon = const Icon(Icons.done, color: Colors.green);
+    } else {
+      icon = const Icon(
+        Icons.close,
+        color: Colors.red,
+      );
+    }
+    return IconButton(
+        onPressed: () {
+          setState(() {
+            PANTRY.reverseHaveAtHome(widget.ingredient);
+          });
+        },
+        icon: icon);
   }
 
   @override
@@ -34,23 +65,20 @@ class _IngredientCardState extends State<IngredientCard> {
         clipBehavior: Clip.hardEdge,
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            setState(() {
-              PANTRY.reverseHaveAtHome(widget.ingredient);
-            });
-          },
           child: SizedBox(
               width: 500,
               height: 60,
               child: Center(
                   child: Row(
                 children: [
-                  Expanded(child: Padding(
+                  Expanded(
+                      child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text(widget.ingredient),
                   )),
-                  Expanded(child: getBetterStockWidget(PANTRY.betterStock(widget.ingredient))),
-                  Expanded(child: getHasAtHomeIcon(PANTRY.haveAtHome(widget.ingredient)))
+                  Expanded(child: getBetterStockIcon()),
+                  Expanded(child: getHasAtHomeButton()),
+                  Expanded(child: getShoppingCartButton())
                 ],
               ))),
         ),

@@ -3,16 +3,17 @@ import 'shopping_list.dart';
 
 class ShoppingListCard extends StatefulWidget {
   final String ingredient;
+  final void Function(String) removeSelf;
 
-  const ShoppingListCard(this.ingredient, {super.key});
+  const ShoppingListCard(this.ingredient, this.removeSelf, {super.key});
 
   @override
   State<ShoppingListCard> createState() => _ShoppingListCardState();
 }
 
 class _ShoppingListCardState extends State<ShoppingListCard> {
-  Widget getHaveAtHomeIcon(String name) {
-    if (SHOPPING_LIST.inCart(name)) {
+  Widget getHaveAtHomeIcon() {
+    if (SHOPPING_LIST.inCart(widget.ingredient)) {
       return const Icon(Icons.shopping_cart, color: Colors.green);
     } else {
       return const Icon(
@@ -20,6 +21,13 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
         color: Colors.red,
       );
     }
+  }
+
+  Widget getRemoveButton() {
+    return IconButton(
+      onPressed: (){widget.removeSelf(widget.ingredient);},
+      icon: const Icon(Icons.close),
+    );
   }
 
   @override
@@ -47,7 +55,10 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
                     ),
                   ),
                   Expanded(
-                    child: getHaveAtHomeIcon(widget.ingredient),
+                    child: getHaveAtHomeIcon(),
+                  ),
+                  Expanded(
+                    child: getRemoveButton(),
                   )
                 ],
               ),
