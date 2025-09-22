@@ -1,5 +1,6 @@
 
 class Pantry {
+  // TODO Persistent storage
   var data = {
     "Rice": [true, false],
     "Buckwheat": [true, false],

@@ -1,9 +1,53 @@
-import 'pantry.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'pantry.dart';
+// TODO Persistent storage
 class ShoppingList {
   Map<String, bool> data = {};
 
-  Set<String> getShoppingList(){
+  ShoppingList() {
+    loadFromPrefs();
+  }
+
+  Future<Map<String, bool>> getDataFromStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getStringList('shopping_list_keys') ?? [];
+    Map<String, bool> ret = {};
+    for (var key in keys) {
+      data[key] = prefs.getBool('shopping_list_value_$key') ?? false;
+    }
+    return ret;
+  }
+
+  Future<void> loadFromPrefs() async {
+    data = await getDataFromStorage();
+  }
+
+  Future<void> saveToPrefs() async {
+    var storedData = await getDataFromStorage();
+
+    var toRemove =
+        storedData.keys.where((key) => !data.containsKey(key)).toList();
+    var toAdd = data.keys.where((key) => !storedData.containsKey(key)).toList();
+    var toUpdate = data.keys
+        .where((key) =>
+            storedData.containsKey(key) && data[key] != storedData[key])
+        .toList();
+
+    final prefs = await SharedPreferences.getInstance();
+
+    for (var key in toRemove) {
+      await prefs.remove('shopping_list_value_$key');
+    }
+    for (var key in toAdd) {
+      await prefs.setBool('shopping_list_value_$key', data[key]!);
+    }
+    for (var key in toUpdate) {
+      await prefs.setBool('shopping_list_value_$key', data[key]!);
+    }
+  }
+
+  Set<String> getShoppingList() {
     return data.keys.toSet();
   }
 
@@ -13,10 +57,12 @@ class ShoppingList {
     } else {
       data[name] = false;
     }
+    saveToPrefs();
   }
 
   void dropList() {
     data = {};
+    saveToPrefs();
   }
 
   void reverseStateInCart(String name) {
@@ -24,6 +70,7 @@ class ShoppingList {
       return;
     }
     data[name] = !data[name]!;
+    saveToPrefs();
   }
 
   bool inList(String name) {
@@ -43,6 +90,7 @@ class ShoppingList {
         PANTRY.reverseHaveAtHome(entry.key);
       }
     }
+    saveToPrefs();
   }
 }
 

@@ -13,30 +13,12 @@ class RecipiesView extends StatefulWidget {
 }
 
 class _RecipiesViewState extends State<RecipiesView> {
-  bool anyIngredientInShoppingList(String recipe) {
-    for (String ing in COOK_BOOK.getIngredients(recipe)) {
-      if (SHOPPING_LIST.inList(ing)) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   void addRecipeToCart(String recipe) {
     setState(() {
-      if (anyIngredientInShoppingList(recipe)) {
-        // Remove all
-        for (String ing in COOK_BOOK.getIngredients(recipe)) {
-          if (SHOPPING_LIST.inList(ing)) {
-            SHOPPING_LIST.reverseStateInList(ing);
-          }
-        }
-      } else {
-        // Add all
-        for (String ing in COOK_BOOK.getIngredients(recipe)) {
-          if (!PANTRY.haveAtHome(ing)) {
-            SHOPPING_LIST.reverseStateInList(ing);
-          }
+      for (String ing in COOK_BOOK.getIngredients(recipe)) {
+        if (!PANTRY.haveAtHome(ing) && !SHOPPING_LIST.inList(ing)) {
+          SHOPPING_LIST.reverseStateInList(ing);
         }
       }
     });
