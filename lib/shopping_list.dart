@@ -1,95 +1,47 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'pantry.dart';
-// TODO Persistent storage
 class ShoppingList {
-  Map<String, bool> data = {};
+  Set<String> _data = {};
 
   ShoppingList() {
     loadFromPrefs();
   }
 
-  Future<Map<String, bool>> getDataFromStorage() async {
+  Future<Set<String>> getDataFromStorage() async {
     final prefs = await SharedPreferences.getInstance();
-    final keys = prefs.getStringList('shopping_list_keys') ?? [];
-    Map<String, bool> ret = {};
-    for (var key in keys) {
-      data[key] = prefs.getBool('shopping_list_value_$key') ?? false;
-    }
-    return ret;
+    final keys = prefs.getStringList('shopping_list') ?? [];
+    return keys.toSet();
   }
 
   Future<void> loadFromPrefs() async {
-    data = await getDataFromStorage();
+    _data = await getDataFromStorage();
   }
 
   Future<void> saveToPrefs() async {
-    var storedData = await getDataFromStorage();
-
-    var toRemove =
-        storedData.keys.where((key) => !data.containsKey(key)).toList();
-    var toAdd = data.keys.where((key) => !storedData.containsKey(key)).toList();
-    var toUpdate = data.keys
-        .where((key) =>
-            storedData.containsKey(key) && data[key] != storedData[key])
-        .toList();
-
-    final prefs = await SharedPreferences.getInstance();
-
-    for (var key in toRemove) {
-      await prefs.remove('shopping_list_value_$key');
-    }
-    for (var key in toAdd) {
-      await prefs.setBool('shopping_list_value_$key', data[key]!);
-    }
-    for (var key in toUpdate) {
-      await prefs.setBool('shopping_list_value_$key', data[key]!);
-    }
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setStringList('shopping_list', _data.toList());
   }
 
   Set<String> getShoppingList() {
-    return data.keys.toSet();
+    return _data.toSet();
   }
 
-  void reverseStateInList(String name) {
-    if (data.containsKey(name)) {
-      data.remove(name);
-    } else {
-      data[name] = false;
-    }
+  bool inList(String name) {
+    return _data.contains(name);
+  }
+
+  void addToShoppingList(String name) {
+    _data.add(name);
+    saveToPrefs();
+  }
+
+  void removeFromShoppingList(String name) {
+    _data.remove(name);
     saveToPrefs();
   }
 
   void dropList() {
-    data = {};
-    saveToPrefs();
-  }
-
-  void reverseStateInCart(String name) {
-    if (!data.containsKey(name)) {
-      return;
-    }
-    data[name] = !data[name]!;
-    saveToPrefs();
-  }
-
-  bool inList(String name) {
-    return data.containsKey(name);
-  }
-
-  bool inCart(String name) {
-    if (!data.containsKey(name)) {
-      return false;
-    }
-    return data[name]!;
-  }
-
-  void buy() {
-    for (var entry in data.entries) {
-      if (entry.value && !PANTRY.haveAtHome(entry.key)) {
-        PANTRY.reverseHaveAtHome(entry.key);
-      }
-    }
+    _data.clear();
     saveToPrefs();
   }
 }

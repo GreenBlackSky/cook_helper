@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import "cook_book.dart";
 import 'recipe_card.dart';
-import 'shopping_list.dart';
+import "state_processor.dart";
 
 class RecipiesView extends StatefulWidget {
   const RecipiesView({super.key});
@@ -13,14 +13,9 @@ class RecipiesView extends StatefulWidget {
 }
 
 class _RecipiesViewState extends State<RecipiesView> {
-
   void addRecipeToCart(String recipe) {
     setState(() {
-      for (String ing in COOK_BOOK.getIngredients(recipe)) {
-        if (!PANTRY.haveAtHome(ing) && !SHOPPING_LIST.inList(ing)) {
-          SHOPPING_LIST.reverseStateInList(ing);
-        }
-      }
+      PROCESSOR.addRecipeToCart(recipe);
     });
   }
 
@@ -29,7 +24,7 @@ class _RecipiesViewState extends State<RecipiesView> {
     int total = ingredients.length;
     int haveAtHome = 0;
     for (String ing in ingredients) {
-      if (PANTRY.haveAtHome(ing)) {
+      if (PANTRY.inPantry(ing)) {
         haveAtHome++;
       }
     }
@@ -45,7 +40,6 @@ class _RecipiesViewState extends State<RecipiesView> {
       },
     );
     return Scaffold(
-      appBar: AppBar(title: const Text('Recipes')),
       body: Center(
         child: SingleChildScrollView(
           child: Column(

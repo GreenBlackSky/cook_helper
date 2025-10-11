@@ -1,62 +1,64 @@
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class Pantry {
-  // TODO Persistent storage
-  var data = {
-    "Rice": [true, false],
-    "Buckwheat": [true, false],
-    "Quinoa": [true, false],
-    "Pasta": [true, false],
-    "Potatoes": [false, false],
-    "Oats": [true, false],
-    "Eggs": [false, false],
-    "Cottage cheese": [false, false],
-    "Feta": [false, false],
-    "Canned lentils": [true, false],
-    "Lentils": [true, false],
-    "Canned chickpeas": [true, false],
-    "Canned black beans": [true, false],
-    "Milk": [false, false],
-    "Frozen mixed veg": [true, false],
-    "Spinach": [false, false],
-    "Broccoli": [false, false],
-    "Zucchini": [false, false],
-    "Peppers": [false, false],
-    "Carrots": [false, false],
-    "Onion": [false, false],
-    "Garlic": [true, false],
-    "Cucumbers": [false, false],
-    "Tomatoes": [false, false],
-    "Canned tomatoes": [true, false],
-    "Tomato sauce": [true, false],
-    "Curry paste": [true, false],
-    "Salsa": [true, false],
-    "Coconut milk": [false, false],
-    "Banana": [false, false],
-    "Bread": [false, false],
-    "Peanut butter": [true, false],
-    "Mushrooms": [false, false],
-    "Sour cream": [false, false],
-    "Canned corn": [true, false],
-    "Avocado": [false, false],
-    "Cheese": [false, false],
-    "Olives": [true, false],
-    "Cabbage": [false, false]
-  };
+  final Map<String, bool> _data = {};
+  final Map<String, bool> _conditions = {};
+
+  Pantry() {
+    loadFromPrefs();
+  }
+
+  Future<Set<String>> getDataFromStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getStringList('pantry') ?? [];
+    return keys.toSet();
+  }
+
+  Future<void> loadFromPrefs() async {
+    final String jsonString = await rootBundle.loadString('pantry.json');
+    Map<String, bool> allItems =
+        (jsonDecode(jsonString) as Map<String, dynamic>)
+            .map((key, value) => MapEntry(key, value as bool));
+    var storedData = await getDataFromStorage();
+    for (var key in allItems.keys) {
+      _data[key] = storedData.contains(key);
+      _conditions[key] = allItems[key]!;
+    }
+  }
+
+  Future<void> saveToPrefs() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    List<String> toSave = [];
+    for (var key in _data.keys) {
+      if (_data[key]!) {
+        toSave.add(key);
+      }
+    }
+    await pref.setStringList('pantry', toSave);
+  }
 
   Set<String> getAllNames() {
-    return data.keys.toSet();
+    return _data.keys.toSet();
   }
 
   bool betterStock(String name) {
-    return data[name]![0];
+    return _conditions.containsKey(name) && _conditions[name]!;
   }
 
-  bool haveAtHome(String name) {
-    return data[name]![1];
+  bool inPantry(String name) {
+    return _data.containsKey(name) && _data[name]!;
   }
 
-  void reverseHaveAtHome(String name) {
-    data[name]![1] = !data[name]![1];
+  void addToPantry(String name) {
+    _data[name] = true;
+    saveToPrefs();
+  }
+
+  void removeFromPantry(String name) {
+    _data[name] = false;
+    saveToPrefs();
   }
 }
 

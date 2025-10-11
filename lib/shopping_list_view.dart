@@ -1,4 +1,5 @@
-import 'pantry.dart';
+import 'package:cook_helper/state_processor.dart';
+
 import 'package:flutter/material.dart';
 import 'shopping_list.dart';
 import 'shopping_list_card.dart';
@@ -19,25 +20,19 @@ class _ShoppingListViewState extends State<ShoppingListView> {
 
   void buyList() {
     setState(() {
-      for (String item in SHOPPING_LIST.getShoppingList()) {
-        if (SHOPPING_LIST.inCart(item) && !PANTRY.haveAtHome(item)) {
-          PANTRY.reverseHaveAtHome(item);
-          SHOPPING_LIST.reverseStateInList(item);
-        }
-      }
+      PROCESSOR.buyCart();
     });
   }
 
   void removeCard(String name) {
     setState(() {
-      SHOPPING_LIST.reverseStateInList(name);
+      SHOPPING_LIST.removeFromShoppingList(name);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Shopping list')),
       persistentFooterButtons: [
         Center(
           child: Row(

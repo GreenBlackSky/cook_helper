@@ -1,6 +1,5 @@
+import 'package:cook_helper/state_processor.dart';
 import 'package:flutter/material.dart';
-import 'pantry.dart';
-import 'shopping_list.dart';
 
 class IngredientCardSmall extends StatefulWidget {
   final String ingredient;
@@ -13,9 +12,10 @@ class IngredientCardSmall extends StatefulWidget {
 
 class _IngredientCardSmallState extends State<IngredientCardSmall> {
   Widget getStatusIcon(String name) {
-    if (PANTRY.haveAtHome(name)) {
+    var state = PROCESSOR.getState(name);
+    if (state == IngredientState.inPantry) {
       return const Icon(Icons.done, color: Colors.green);
-    } else if (SHOPPING_LIST.inList(name)) {
+    } else if (state == IngredientState.inShoppingList) {
       return const Icon(
         Icons.shopping_cart,
         color: Colors.blue,

@@ -11,6 +11,7 @@ class RecipeCard extends StatefulWidget {
   State<RecipeCard> createState() => _RecipeCardState();
 }
 
+// TODO add cooking time and macro
 class _RecipeCardState extends State<RecipeCard> {
   @override
   Widget build(BuildContext context) {

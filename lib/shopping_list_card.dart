@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'shopping_list.dart';
+import 'cart.dart';
 
 class ShoppingListCard extends StatefulWidget {
   final String ingredient;
@@ -13,7 +13,7 @@ class ShoppingListCard extends StatefulWidget {
 
 class _ShoppingListCardState extends State<ShoppingListCard> {
   Widget getHaveAtHomeIcon() {
-    if (SHOPPING_LIST.inCart(widget.ingredient)) {
+    if (CART.inCart(widget.ingredient)) {
       return const Icon(Icons.shopping_cart, color: Colors.green);
     } else {
       return const Icon(
@@ -25,9 +25,21 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
 
   Widget getRemoveButton() {
     return IconButton(
-      onPressed: (){widget.removeSelf(widget.ingredient);},
+      onPressed: () {
+        widget.removeSelf(widget.ingredient);
+      },
       icon: const Icon(Icons.close),
     );
+  }
+
+  void changeCartState() {
+    setState(() {
+      if (CART.inCart(widget.ingredient)) {
+        CART.removeFromCart(widget.ingredient);
+      } else {
+        CART.addToCart(widget.ingredient);
+      }
+    });
   }
 
   @override
@@ -37,11 +49,7 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
         clipBehavior: Clip.hardEdge,
         child: InkWell(
           splashColor: Colors.blue.withAlpha(30),
-          onTap: () {
-            setState(() {
-              SHOPPING_LIST.reverseStateInCart(widget.ingredient);
-            });
-          },
+          onTap: changeCartState,
           child: SizedBox(
             width: 500,
             height: 60,

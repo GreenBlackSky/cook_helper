@@ -1,25 +1,34 @@
-class CookBook {
-  var data = {
-    "Oatmeal": {"Oats", "Milk", "Peanut butter", "Banana"},
-    "Omelette": {"Eggs", "Spinach", "Milk", "Feta"},
-    "Lentil & veggie stew": {"Lentils", "Onion", "Carrots", "Spinach", "Canned tomatoes"},
-    "Baked potato with cheese": {"Potatoes", "Cottage cheese"},
-    "Chickpea curry": {"Canned chickpeas", "Coconut milk", "Curry paste", "Frozen mixed veg"},
-    "Buckwheat with Scrambled eggs, mushrooms": {"Buckwheat", "Eggs", "Mushrooms"},
-    "Salad": {"Tomatoes", "Cucumbers", "Peppers", "Sour cream"},
-    "Quinoa": {"Quinoa", "Zucchini", "Peppers", "Carrots", "Onion", "Feta"},
-    "Pasta with lentil Bolognese": {"Pasta", "Canned lentils", "Tomato sauce", "Onion", "Garlic"},
-    "Veggie burrito bowl": {"Rice", "Canned black beans", "Canned corn", "Salsa", "Avocado", "Cheese"},
-    "Greek salad": {"Tomatoes", "Cucumbers", "Onion", "Feta", "Eggs", "Olives"},
-    "Stewed Cabbage ": {"Cabbage", "Carrots", "Peppers", "Cottage cheese"},
-  };
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:convert';
 
-  Set<String> getAllNames() {
-    return data.keys.toSet();
+
+class CookBook {
+  final Map<String, List<String>> _data = {};
+
+  CookBook() {
+    loadFromData();
   }
 
-  Set<String> getIngredients(String name) {
-    return data[name]!;
+  Future<void> loadFromData() async {
+    final String jsonString = await rootBundle.loadString('cook_book.json');
+    Map<String, dynamic> recipes = jsonDecode(jsonString) as Map<String, dynamic>;
+    for(String key in recipes.keys) {
+      _data[key] = [];
+      for(String ing in recipes[key]) {
+        _data[key]!.add(ing);
+      }
+    }
+  }
+
+  Set<String> getAllNames() {
+    return _data.keys.toSet();
+  }
+
+  List<String> getIngredients(String name) {
+    if(!_data.containsKey(name)){
+      return [];
+    }
+    return _data[name]!;
   }
 }
 

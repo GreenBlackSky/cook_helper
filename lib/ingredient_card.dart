@@ -33,7 +33,11 @@ class _IngredientCardState extends State<IngredientCard> {
     return IconButton(
         onPressed: () {
           setState(() {
-            SHOPPING_LIST.reverseStateInList(widget.ingredient);
+            if (SHOPPING_LIST.inList(widget.ingredient)) {
+              SHOPPING_LIST.removeFromShoppingList(widget.ingredient);
+            } else {
+              SHOPPING_LIST.addToShoppingList(widget.ingredient);
+            }
           });
         },
         icon: icon);
@@ -41,7 +45,7 @@ class _IngredientCardState extends State<IngredientCard> {
 
   Widget getHasAtHomeButton() {
     Icon icon;
-    if (PANTRY.haveAtHome(widget.ingredient)) {
+    if (PANTRY.inPantry(widget.ingredient)) {
       icon = const Icon(Icons.done, color: Colors.green);
     } else {
       icon = const Icon(
@@ -50,12 +54,17 @@ class _IngredientCardState extends State<IngredientCard> {
       );
     }
     return IconButton(
-        onPressed: () {
-          setState(() {
-            PANTRY.reverseHaveAtHome(widget.ingredient);
-          });
-        },
-        icon: icon);
+      onPressed: () {
+        setState(() {
+          if (PANTRY.inPantry(widget.ingredient)) {
+            PANTRY.removeFromPantry(widget.ingredient);
+          } else {
+            PANTRY.addToPantry(widget.ingredient);
+          }
+        });
+      },
+      icon: icon,
+    );
   }
 
   @override
@@ -73,7 +82,7 @@ class _IngredientCardState extends State<IngredientCard> {
                 children: [
                   Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(widget.ingredient),
                   )),
                   Expanded(child: getBetterStockIcon()),

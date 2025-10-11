@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'tabs_screen.dart';
-  
-// TODO Android build
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
+// TODO create a cooking screen with steps and tips
+// TODO wait for laoddig all assets before showing widgets
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
