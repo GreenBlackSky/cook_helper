@@ -2,19 +2,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ShoppingList {
   Set<String> _data = {};
+  bool _initialized = false;
 
-  ShoppingList() {
-    loadFromPrefs();
+  static final ShoppingList _instance = ShoppingList();
+
+  static Future<ShoppingList> getInstance() async {
+    if (!_instance._initialized) {
+      await _instance.init();
+    }
+    return _instance;
   }
 
-  Future<Set<String>> getDataFromStorage() async {
+  Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
-    final keys = prefs.getStringList('shopping_list') ?? [];
-    return keys.toSet();
-  }
-
-  Future<void> loadFromPrefs() async {
-    _data = await getDataFromStorage();
+    _data = (prefs.getStringList('shopping_list') ?? []).toSet();
+    _initialized = true;
   }
 
   Future<void> saveToPrefs() async {
@@ -45,5 +47,3 @@ class ShoppingList {
     saveToPrefs();
   }
 }
-
-var SHOPPING_LIST = ShoppingList();

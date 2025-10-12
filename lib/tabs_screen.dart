@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'pantry_view.dart';
-import 'recipes_view.dart';
-import 'shopping_list_view.dart';
+import 'pantry_tab/pantry_view.dart';
+import 'cook_book_tab/cook_book_view.dart';
+import 'shopping_list_tab/shopping_list_view.dart';
 
 class TabsScreen extends StatelessWidget {
   const TabsScreen({super.key});

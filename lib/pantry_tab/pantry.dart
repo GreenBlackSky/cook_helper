@@ -5,27 +5,31 @@ import 'package:flutter/services.dart' show rootBundle;
 class Pantry {
   final Map<String, bool> _data = {};
   final Map<String, bool> _conditions = {};
+  bool _initialized = false;
 
-  Pantry() {
-    loadFromPrefs();
+  static final Pantry _instance = Pantry();
+
+  static Future<Pantry> getInstance() async {
+    if (!_instance._initialized) {
+      await _instance.init();
+    }
+    return _instance;
   }
 
-  Future<Set<String>> getDataFromStorage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final keys = prefs.getStringList('pantry') ?? [];
-    return keys.toSet();
-  }
-
-  Future<void> loadFromPrefs() async {
+  Future<void> init() async {
     final String jsonString = await rootBundle.loadString('pantry.json');
     Map<String, bool> allItems =
         (jsonDecode(jsonString) as Map<String, dynamic>)
             .map((key, value) => MapEntry(key, value as bool));
-    var storedData = await getDataFromStorage();
-    for (var key in allItems.keys) {
+
+    var prefs = await SharedPreferences.getInstance();
+    var storedData = (prefs.getStringList('pantry') ?? []).toSet();
+
+    for (String key in allItems.keys) {
       _data[key] = storedData.contains(key);
       _conditions[key] = allItems[key]!;
     }
+    _initialized = true;
   }
 
   Future<void> saveToPrefs() async {
@@ -61,5 +65,3 @@ class Pantry {
     saveToPrefs();
   }
 }
-
-var PANTRY = Pantry();

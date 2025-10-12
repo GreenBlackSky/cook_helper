@@ -1,5 +1,10 @@
 class Cart {
   final Set<String> _data = {};
+  static final Cart _instance = Cart();
+
+  static Cart getInstance() {
+    return _instance;
+  }
 
   Set<String> getItems() {
     return _data.toSet();
@@ -17,5 +22,3 @@ class Cart {
     _data.remove(name);
   }
 }
-
-var CART = Cart();

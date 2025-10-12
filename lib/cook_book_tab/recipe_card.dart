@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
-import 'cook_book.dart';
 import 'ingredient_card_small.dart';
+import '../pantry_tab/pantry.dart';
+import "../shopping_list_tab/shopping_list.dart";
 
 class RecipeCard extends StatefulWidget {
+  final Pantry pantry;
+  final ShoppingList shoppingList;
   final String recipe;
+  final List<String> ingredients;
   final void Function(String) addRecipeToCart;
-  const RecipeCard(this.recipe, this.addRecipeToCart, {super.key});
+  const RecipeCard(
+    this.pantry,
+    this.shoppingList,
+    this.recipe,
+    this.ingredients,
+    this.addRecipeToCart, {
+    super.key,
+  });
 
   @override
   State<RecipeCard> createState() => _RecipeCardState();
@@ -36,9 +47,12 @@ class _RecipeCardState extends State<RecipeCard> {
                     ),
                   ),
                   Column(
-                    children:
-                        COOK_BOOK.getIngredients(widget.recipe).map((entry) {
-                      return IngredientCardSmall(entry);
+                    children: widget.ingredients.map((entry) {
+                      return IngredientCardSmall(
+                        widget.pantry,
+                        widget.shoppingList,
+                        entry,
+                      );
                     }).toList(),
                   )
                 ],
