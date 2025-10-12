@@ -13,59 +13,48 @@ class RecipiesView extends StatefulWidget {
 }
 
 class _RecipiesViewState extends State<RecipiesView> {
-  final Future<CookBook> _cookBook = CookBook.getInstance();
-  final Future<Pantry> _pantry = Pantry.getInstance();
-  final Future<ShoppingList> _shoppingList = ShoppingList.getInstance();
-
-  void addRecipeToCart(CookBook cookBook, Pantry pantry,
-      ShoppingList shoppingList, String recipe) {
+  void addRecipeToCart(String recipe) {
     setState(() {
-      for (String ing in cookBook.getIngredients(recipe)) {
-        if (!pantry.inPantry(ing) && !shoppingList.inList(ing)) {
-          shoppingList.addToShoppingList(ing);
+      for (String ing in CookBook.instance.getIngredients(recipe)) {
+        if (!Pantry.instance.inPantry(ing) && !ShoppingList.instance.inList(ing)) {
+          ShoppingList.instance.addToShoppingList(ing);
         }
       }
     });
   }
 
-  int haveIngredientsPercentage(CookBook cookBook, Pantry pantry, String name) {
-    var ingredients = cookBook.getIngredients(name);
+  int haveIngredientsPercentage(String name) {
+    var ingredients = CookBook.instance.getIngredients(name);
     int total = ingredients.length;
     int haveAtHome = 0;
     for (String ing in ingredients) {
-      if (pantry.inPantry(ing)) {
+      if (Pantry.instance.inPantry(ing)) {
         haveAtHome++;
       }
     }
     return ((haveAtHome / total) * 100).toInt();
   }
 
-  List<String> getRecipes(CookBook cookBook, Pantry pantry) {
-    var recipes = cookBook.getAllNames().toList();
+  List<String> getRecipes() {
+    var recipes = CookBook.instance.getAllNames().toList();
     recipes.sort(
       (a, b) {
-        return (haveIngredientsPercentage(cookBook, pantry, b) -
-            haveIngredientsPercentage(cookBook, pantry, a));
+        return (haveIngredientsPercentage(b) - haveIngredientsPercentage(a));
       },
     );
     return recipes;
   }
 
-  Widget buildView(
-      CookBook cookBook, Pantry pantry, ShoppingList shoppingList) {
+  Widget buildView() {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: getRecipes(cookBook, pantry).map((entry) {
+            children: getRecipes().map((entry) {
               return RecipeCard(
-                pantry,
-                shoppingList,
                 entry,
-                cookBook.getIngredients(entry),
-                (String s) =>
-                    addRecipeToCart(cookBook, pantry, shoppingList, s),
+                addRecipeToCart,
               );
             }).toList(),
           ),
@@ -77,14 +66,14 @@ class _RecipiesViewState extends State<RecipiesView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait([_cookBook, _pantry, _shoppingList]),
+      future: Future.wait([
+        CookBook.instance.init(),
+        Pantry.instance.init(),
+        ShoppingList.instance.init(),
+      ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return buildView(
-            snapshot.data![0] as CookBook,
-            snapshot.data![1] as Pantry,
-            snapshot.data![2] as ShoppingList,
-          );
+          return buildView();
         } else {
           return const Scaffold(body: Center(child: Text("LOADING")));
         }

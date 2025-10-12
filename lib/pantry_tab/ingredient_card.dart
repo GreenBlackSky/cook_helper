@@ -3,12 +3,9 @@ import 'pantry.dart';
 import '../shopping_list_tab/shopping_list.dart';
 
 class IngredientCard extends StatefulWidget {
-  final Pantry pantry;
-  final ShoppingList shoppingList;
   final String ingredient;
 
-  const IngredientCard(this.pantry, this.shoppingList, this.ingredient,
-      {super.key});
+  const IngredientCard(this.ingredient, {super.key});
 
   @override
   State<IngredientCard> createState() => _IngredientCardState();
@@ -16,7 +13,7 @@ class IngredientCard extends StatefulWidget {
 
 class _IngredientCardState extends State<IngredientCard> {
   Widget getBetterStockIcon() {
-    if (widget.pantry.betterStock(widget.ingredient)) {
+    if (Pantry.instance.betterStock(widget.ingredient)) {
       return const Icon(Icons.home);
     } else {
       return const Icon(Icons.store);
@@ -25,7 +22,7 @@ class _IngredientCardState extends State<IngredientCard> {
 
   Widget getShoppingCartButton() {
     Icon icon;
-    if (widget.shoppingList.inList(widget.ingredient)) {
+    if (ShoppingList.instance.inList(widget.ingredient)) {
       icon = const Icon(
         Icons.shopping_cart,
         color: Colors.blue,
@@ -34,21 +31,22 @@ class _IngredientCardState extends State<IngredientCard> {
       icon = const Icon(Icons.shopping_cart);
     }
     return IconButton(
-        onPressed: () {
-          setState(() {
-            if (widget.shoppingList.inList(widget.ingredient)) {
-              widget.shoppingList.removeFromShoppingList(widget.ingredient);
-            } else {
-              widget.shoppingList.addToShoppingList(widget.ingredient);
-            }
-          });
-        },
-        icon: icon);
+      icon: icon,
+      onPressed: () {
+        setState(() {
+          if (ShoppingList.instance.inList(widget.ingredient)) {
+            ShoppingList.instance.removeFromShoppingList(widget.ingredient);
+          } else {
+            ShoppingList.instance.addToShoppingList(widget.ingredient);
+          }
+        });
+      },
+    );
   }
 
   Widget getHasAtHomeButton() {
     Icon icon;
-    if (widget.pantry.inPantry(widget.ingredient)) {
+    if (Pantry.instance.inPantry(widget.ingredient)) {
       icon = const Icon(Icons.done, color: Colors.green);
     } else {
       icon = const Icon(
@@ -59,10 +57,10 @@ class _IngredientCardState extends State<IngredientCard> {
     return IconButton(
       onPressed: () {
         setState(() {
-          if (widget.pantry.inPantry(widget.ingredient)) {
-            widget.pantry.removeFromPantry(widget.ingredient);
+          if (Pantry.instance.inPantry(widget.ingredient)) {
+            Pantry.instance.removeFromPantry(widget.ingredient);
           } else {
-            widget.pantry.addToPantry(widget.ingredient);
+            Pantry.instance.addToPantry(widget.ingredient);
           }
         });
       },

@@ -7,16 +7,15 @@ class Pantry {
   final Map<String, bool> _conditions = {};
   bool _initialized = false;
 
-  static final Pantry _instance = Pantry();
+  Pantry._();
 
-  static Future<Pantry> getInstance() async {
-    if (!_instance._initialized) {
-      await _instance.init();
-    }
-    return _instance;
-  }
+  static final instance = Pantry._();
 
   Future<void> init() async {
+    if (_initialized) {
+      return;
+    }
+
     final String jsonString = await rootBundle.loadString('pantry.json');
     Map<String, bool> allItems =
         (jsonDecode(jsonString) as Map<String, dynamic>)

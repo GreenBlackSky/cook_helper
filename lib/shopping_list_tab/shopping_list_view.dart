@@ -12,35 +12,31 @@ class ShoppingListView extends StatefulWidget {
 }
 
 class _ShoppingListViewState extends State<ShoppingListView> {
-  final Cart _cart = Cart.getInstance();
-  final Future<Pantry> _pantry = Pantry.getInstance();
-  final Future<ShoppingList> _shoppingList = ShoppingList.getInstance();
-
-  void dropList(ShoppingList shoppingList) {
+  void dropList() {
     setState(() {
-      shoppingList.dropList();
+      ShoppingList.instance.dropList();
     });
   }
 
-  void buyList(Pantry pantry, ShoppingList shoppingList, Cart cart) {
+  void buyList() {
     setState(() {
-      for (String item in cart.getItems()) {
-        if (!pantry.inPantry(item)) {
-          pantry.addToPantry(item);
-          cart.removeFromCart(item);
-          shoppingList.removeFromShoppingList(item);
+      for (String item in Cart.instance.getItems()) {
+        if (!Pantry.instance.inPantry(item)) {
+          Pantry.instance.addToPantry(item);
+          Cart.instance.removeFromCart(item);
+          ShoppingList.instance.removeFromShoppingList(item);
         }
       }
     });
   }
 
-  void removeCard(ShoppingList shoppingList, String name) {
+  void removeCard(String name) {
     setState(() {
-      shoppingList.removeFromShoppingList(name);
+      ShoppingList.instance.removeFromShoppingList(name);
     });
   }
 
-  Widget buildView(Pantry pantry, ShoppingList shoppingList, Cart cart) {
+  Widget buildView() {
     return Scaffold(
       persistentFooterButtons: [
         Center(
@@ -48,11 +44,11 @@ class _ShoppingListViewState extends State<ShoppingListView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: () => buyList(pantry, shoppingList, cart),
+                onPressed: () => buyList(),
                 icon: const Icon(Icons.done, color: Colors.green),
               ),
               IconButton(
-                onPressed: () => dropList(shoppingList),
+                onPressed: () => dropList(),
                 icon: const Icon(Icons.close, color: Colors.red),
               ),
             ],
@@ -63,11 +59,10 @@ class _ShoppingListViewState extends State<ShoppingListView> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: shoppingList.getShoppingList().map((entry) {
+            children: ShoppingList.instance.getShoppingList().map((entry) {
               return ShoppingListCard(
-                cart,
                 entry,
-                (String s) => removeCard(shoppingList, s),
+                removeCard,
               );
             }).toList(),
           ),
@@ -79,14 +74,11 @@ class _ShoppingListViewState extends State<ShoppingListView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Future.wait([_pantry, _shoppingList]),
+      future:
+          Future.wait([Pantry.instance.init(), ShoppingList.instance.init()]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return buildView(
-            snapshot.data![0] as Pantry,
-            snapshot.data![1] as ShoppingList,
-            _cart,
-          );
+          return buildView();
         } else {
           return const Scaffold(body: Center(child: Text("LOADING")));
         }

@@ -5,16 +5,15 @@ class CookBook {
   final Map<String, List<String>> _data = {};
   bool _initialized = false;
 
-  static final CookBook _instance = CookBook();
+  CookBook._();
 
-  static Future<CookBook> getInstance() async {
-    if (!_instance._initialized) {
-      await _instance.init();
-    }
-    return _instance;
-  }
+  static final instance = CookBook._();
 
   Future<void> init() async {
+    if (_initialized) {
+      return;
+    }
+
     final String jsonString = await rootBundle.loadString('cook_book.json');
     Map<String, dynamic> recipes =
         jsonDecode(jsonString) as Map<String, dynamic>;

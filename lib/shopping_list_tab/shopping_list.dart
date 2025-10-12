@@ -4,16 +4,15 @@ class ShoppingList {
   Set<String> _data = {};
   bool _initialized = false;
 
-  static final ShoppingList _instance = ShoppingList();
+  ShoppingList._();
 
-  static Future<ShoppingList> getInstance() async {
-    if (!_instance._initialized) {
-      await _instance.init();
-    }
-    return _instance;
-  }
+  static final instance = ShoppingList._();
 
   Future<void> init() async {
+    if (_initialized) {
+      return;
+    }
+
     final prefs = await SharedPreferences.getInstance();
     _data = (prefs.getStringList('shopping_list') ?? []).toSet();
     _initialized = true;

@@ -1,10 +1,9 @@
 class Cart {
   final Set<String> _data = {};
-  static final Cart _instance = Cart();
 
-  static Cart getInstance() {
-    return _instance;
-  }
+  Cart._();
+
+  static final instance = Cart._();
 
   Set<String> getItems() {
     return _data.toSet();
