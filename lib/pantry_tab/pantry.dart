@@ -16,7 +16,7 @@ class Pantry {
       return;
     }
 
-    final String jsonString = await rootBundle.loadString('pantry.json');
+    final String jsonString = await rootBundle.loadString('assets/pantry.json');
     Map<String, bool> allItems =
         (jsonDecode(jsonString) as Map<String, dynamic>)
             .map((key, value) => MapEntry(key, value as bool));

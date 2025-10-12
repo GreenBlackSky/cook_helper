@@ -14,7 +14,7 @@ class CookBook {
       return;
     }
 
-    final String jsonString = await rootBundle.loadString('cook_book.json');
+    final String jsonString = await rootBundle.loadString('assets/cook_book.json');
     Map<String, dynamic> recipes =
         jsonDecode(jsonString) as Map<String, dynamic>;
     for (String key in recipes.keys) {
