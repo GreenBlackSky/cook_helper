@@ -3,9 +3,12 @@ import 'cart.dart';
 
 class ShoppingListCard extends StatefulWidget {
   final String ingredient;
+  final Cart cart;
+
   final void Function(String) removeSelf;
 
-  const ShoppingListCard(this.ingredient, this.removeSelf, {super.key});
+  const ShoppingListCard(this.cart, this.ingredient, this.removeSelf,
+      {super.key});
 
   @override
   State<ShoppingListCard> createState() => _ShoppingListCardState();
@@ -13,7 +16,7 @@ class ShoppingListCard extends StatefulWidget {
 
 class _ShoppingListCardState extends State<ShoppingListCard> {
   Widget getHaveAtHomeIcon() {
-    if (CART.inCart(widget.ingredient)) {
+    if (widget.cart.inCart(widget.ingredient)) {
       return const Icon(Icons.shopping_cart, color: Colors.green);
     } else {
       return const Icon(
@@ -34,10 +37,10 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
 
   void changeCartState() {
     setState(() {
-      if (CART.inCart(widget.ingredient)) {
-        CART.removeFromCart(widget.ingredient);
+      if (widget.cart.inCart(widget.ingredient)) {
+        widget.cart.removeFromCart(widget.ingredient);
       } else {
-        CART.addToCart(widget.ingredient);
+        widget.cart.addToCart(widget.ingredient);
       }
     });
   }

@@ -7,7 +7,6 @@ void main() {
 }
 
 // TODO create a cooking screen with steps and tips
-// TODO wait for laoddig all assets before showing widgets
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

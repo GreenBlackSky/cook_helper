@@ -1,10 +1,13 @@
-import 'package:cook_helper/state_processor.dart';
 import 'package:flutter/material.dart';
+import "../pantry_tab/pantry.dart";
+import "../shopping_list_tab/shopping_list.dart";
 
 class IngredientCardSmall extends StatefulWidget {
   final String ingredient;
+  final Pantry pantry;
+  final ShoppingList shoppingList;
 
-  const IngredientCardSmall(this.ingredient, {super.key});
+  const IngredientCardSmall(this.pantry, this.shoppingList, this.ingredient, {super.key});
 
   @override
   State<IngredientCardSmall> createState() => _IngredientCardSmallState();
@@ -12,10 +15,9 @@ class IngredientCardSmall extends StatefulWidget {
 
 class _IngredientCardSmallState extends State<IngredientCardSmall> {
   Widget getStatusIcon(String name) {
-    var state = PROCESSOR.getState(name);
-    if (state == IngredientState.inPantry) {
+    if (widget.pantry.inPantry(name)) {
       return const Icon(Icons.done, color: Colors.green);
-    } else if (state == IngredientState.inShoppingList) {
+    } else if (widget.shoppingList.inList(name)) {
       return const Icon(
         Icons.shopping_cart,
         color: Colors.blue,
