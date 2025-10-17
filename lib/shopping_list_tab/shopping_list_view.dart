@@ -23,9 +23,9 @@ class _ShoppingListViewState extends State<ShoppingListView> {
       for (String item in Cart.instance.getItems()) {
         if (!Pantry.instance.inPantry(item)) {
           Pantry.instance.addToPantry(item);
-          Cart.instance.removeFromCart(item);
-          ShoppingList.instance.removeFromShoppingList(item);
         }
+        Cart.instance.removeFromCart(item);
+        ShoppingList.instance.removeFromShoppingList(item);
       }
     });
   }

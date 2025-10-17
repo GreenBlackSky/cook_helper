@@ -5,6 +5,7 @@ import 'recipe_card.dart';
 import '../pantry_tab/pantry.dart';
 import "../shopping_list_tab/shopping_list.dart";
 
+// TODO tags, search
 class RecipiesView extends StatefulWidget {
   const RecipiesView({super.key});
 
@@ -13,16 +14,6 @@ class RecipiesView extends StatefulWidget {
 }
 
 class _RecipiesViewState extends State<RecipiesView> {
-  void addRecipeToCart(String recipe) {
-    setState(() {
-      for (String ing in CookBook.instance.getIngredients(recipe)) {
-        if (!Pantry.instance.inPantry(ing) && !ShoppingList.instance.inList(ing)) {
-          ShoppingList.instance.addToShoppingList(ing);
-        }
-      }
-    });
-  }
-
   int haveIngredientsPercentage(String name) {
     var ingredients = CookBook.instance.getIngredients(name);
     int total = ingredients.length;
@@ -51,12 +42,7 @@ class _RecipiesViewState extends State<RecipiesView> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: getRecipes().map((entry) {
-              return RecipeCard(
-                entry,
-                addRecipeToCart,
-              );
-            }).toList(),
+            children: getRecipes().map((entry) => RecipeCard(entry)).toList(),
           ),
         ),
       ),

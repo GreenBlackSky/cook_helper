@@ -3,7 +3,7 @@ import '../shopping_list_tab/shopping_list.dart';
 import 'ingredient_card.dart';
 import 'pantry.dart';
 
-// TODO Add sorting button
+// TODO Add sorting button have/dont have/all
 
 class IngredientsView extends StatefulWidget {
   const IngredientsView({super.key});

@@ -7,6 +7,8 @@ void main() {
 }
 
 // TODO create a cooking screen with steps and tips
+// TODO Infinite Scroll Pagination for long lists
+// TODO favourite recipes
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
