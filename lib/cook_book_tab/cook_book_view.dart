@@ -4,16 +4,21 @@ import "cook_book.dart";
 import 'recipe_card.dart';
 import '../pantry_tab/pantry.dart';
 import "../shopping_list_tab/shopping_list.dart";
+import "../favorites/favorites.dart";
 
-// TODO tags, search
-class RecipiesView extends StatefulWidget {
-  const RecipiesView({super.key});
+// TODO tags
+// TODO search
+// TODO random one
+// TODO filter by have/dont have/all
+
+class CookBookView extends StatefulWidget {
+  const CookBookView({super.key});
 
   @override
-  State<RecipiesView> createState() => _RecipiesViewState();
+  State<CookBookView> createState() => _CookBookViewState();
 }
 
-class _RecipiesViewState extends State<RecipiesView> {
+class _CookBookViewState extends State<CookBookView> {
   int haveIngredientsPercentage(String name) {
     var ingredients = CookBook.instance.getIngredients(name);
     int total = ingredients.length;
@@ -54,6 +59,7 @@ class _RecipiesViewState extends State<RecipiesView> {
     return FutureBuilder(
       future: Future.wait([
         CookBook.instance.init(),
+        Favorites.instance.init(),
         Pantry.instance.init(),
         ShoppingList.instance.init(),
       ]),

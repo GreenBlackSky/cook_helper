@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
-import '../shopping_list_tab/shopping_list.dart';
-import 'ingredient_card.dart';
-import 'pantry.dart';
 
-// TODO Add sorting button have/miss/all
-// TODO add search
-// TODO categories frozen/canned/etc
+import 'favorites.dart';
+import "../cook_book_tab/cook_book.dart";
+import '../cook_book_tab/recipe_card.dart';
+import '../pantry_tab/pantry.dart';
+import "../shopping_list_tab/shopping_list.dart";
 
-class PantryView extends StatefulWidget {
-  const PantryView({super.key});
+// TODO common base class waitable
+// TODO remove card when unchecked
+
+class FavoritesView extends StatefulWidget {
+  const FavoritesView({super.key});
 
   @override
-  State<PantryView> createState() => _PantryViewState();
+  State<FavoritesView> createState() => _FavoritesViewState();
 }
 
-class _PantryViewState extends State<PantryView> {
+class _FavoritesViewState extends State<FavoritesView> {
+ 
   Widget buildView() {
-    var names = Pantry.instance.getAllNames().toList();
-    names.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: names.map((entry) {
-              return IngredientCard(entry);
-            }).toList(),
+            children: Favorites.instance.getFavorites().map((entry) => RecipeCard(entry)).toList(),
           ),
         ),
       ),
@@ -37,6 +35,8 @@ class _PantryViewState extends State<PantryView> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: Future.wait([
+        CookBook.instance.init(),
+        Favorites.instance.init(),
         Pantry.instance.init(),
         ShoppingList.instance.init(),
       ]),
