@@ -7,7 +7,8 @@ import "../favorites/favorites.dart";
 
 class RecipeCard extends StatefulWidget {
   final String recipe;
-  const RecipeCard(this.recipe, {super.key});
+  final VoidCallback? onRemoved;
+  const RecipeCard(this.recipe, {this.onRemoved, super.key});
 
   @override
   State<RecipeCard> createState() => _RecipeCardState();
@@ -33,6 +34,7 @@ class _RecipeCardState extends State<RecipeCard> {
     setState(() {
       if(Favorites.instance.inList(widget.recipe)) {
         Favorites.instance.removeFromFavorites(widget.recipe);
+        widget.onRemoved?.call();
       } else {
         Favorites.instance.addToFavorites(widget.recipe);
       }
@@ -72,18 +74,13 @@ class _RecipeCardState extends State<RecipeCard> {
     return Center(
       child: Card(
         clipBehavior: Clip.hardEdge,
-        child: InkWell(
-          splashColor: Colors.blue.withAlpha(30),
-          // onTap: () {
-          //   unfold/fold;
-          // },
-          child: SizedBox(
-            width: 500,
-            child: Center(
-              child: Column(
-                children: [getHeader(), getIngredients()],
-              ),
-            ),
+        child: SizedBox(
+          width: 500,
+          child: ExpansionTile(
+            title: getHeader(),
+            subtitle: getIngredients(),
+            children: [Text("1"),Text("1"),Text("1")],
+            showTrailingIcon: false,
           ),
         ),
       ),

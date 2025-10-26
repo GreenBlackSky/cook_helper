@@ -5,14 +5,20 @@ import 'shopping_list_tab/shopping_list_view.dart';
 import 'favorites/favorites_view.dart';
 
 class TabsScreen extends StatelessWidget {
+  final favoritesView = const FavoritesView();
+  final cookBookView = const CookBookView();
+  final shoppingListView = const ShoppingListView();
+  final pantryView = const PantryView();
+
   const TabsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(
+    return DefaultTabController(
       length: 4,
+      initialIndex: 1,
       child: Scaffold(
-        appBar: TabBar(
+        appBar: const TabBar(
           tabs: [
             Tab(icon: Icon(Icons.star)),
             Tab(icon: Icon(Icons.menu_book)),
@@ -22,10 +28,10 @@ class TabsScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            FavoritesView(),
-            CookBookView(),
-            ShoppingListView(),
-            PantryView(),
+            favoritesView,
+            cookBookView,
+            shoppingListView,
+            pantryView,
           ],
         ),
       ),

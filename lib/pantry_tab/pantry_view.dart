@@ -6,6 +6,8 @@ import 'pantry.dart';
 // TODO Add sorting button have/miss/all
 // TODO add search
 // TODO categories frozen/canned/etc
+// TODO factories
+// TODO common data holder class
 
 class PantryView extends StatefulWidget {
   const PantryView({super.key});

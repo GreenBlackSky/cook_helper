@@ -7,8 +7,7 @@ import '../pantry_tab/pantry.dart';
 import "../shopping_list_tab/shopping_list.dart";
 
 // TODO common base class waitable
-// TODO remove card when unchecked
-
+// TODO keep scrolling position after removing from favorites (animated list)
 class FavoritesView extends StatefulWidget {
   const FavoritesView({super.key});
 
@@ -17,14 +16,23 @@ class FavoritesView extends StatefulWidget {
 }
 
 class _FavoritesViewState extends State<FavoritesView> {
- 
+  void _updateList() {
+    setState(() {});
+  }
+
   Widget buildView() {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: Favorites.instance.getFavorites().map((entry) => RecipeCard(entry)).toList(),
+            children: Favorites.instance
+                .getFavorites()
+                .map((entry) => RecipeCard(
+                      entry,
+                      onRemoved: _updateList,
+                    ))
+                .toList(),
           ),
         ),
       ),
