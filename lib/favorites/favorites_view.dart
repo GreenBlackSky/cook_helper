@@ -28,8 +28,8 @@ class _FavoritesViewState extends State<FavoritesView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: Favorites.instance
                 .getFavorites()
-                .map((entry) => RecipeCard(
-                      entry,
+                .map((id) => RecipeCard(
+                      CookBook.instance.getItem(id),
                       onRemoved: _updateList,
                     ))
                 .toList(),

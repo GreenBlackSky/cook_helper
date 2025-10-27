@@ -1,8 +1,31 @@
+import 'package:cook_helper/pantry_tab/pantry.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
+// TODO factories
+// TODO common data holder class
+// TODO separate static data classes and user data classes
+// TODO fromJson methods
+
+class Recipe {
+  int id;
+  String name;
+  String cookingTime = "";
+  int portions = 2;
+  double kkal = 0;
+  double carbs = 0;
+  double fat = 0;
+  double protein = 0;
+  List<Ingredient> ingredients;
+  List<String> tags = [];
+  List<String> tips = [];
+  List<String> recipe;
+
+  Recipe(this.id, this.name, this.ingredients, this.recipe);
+}
+
 class CookBook {
-  final Map<String, List<String>> _data = {};
+  final Map<int, Recipe> _data = {};
   bool _initialized = false;
 
   CookBook._();
@@ -14,26 +37,30 @@ class CookBook {
       return;
     }
 
-    final String jsonString = await rootBundle.loadString('assets/cook_book.json');
-    Map<String, dynamic> recipes =
-        jsonDecode(jsonString) as Map<String, dynamic>;
+    final String jsonString =
+        await rootBundle.loadString('assets/cook_book.json');
+    Map<String, dynamic> recipes = jsonDecode(jsonString);
+    var pantry = Pantry.instance;
+    await pantry.init();
+
     for (String key in recipes.keys) {
-      _data[key] = [];
-      for (String ing in recipes[key]) {
-        _data[key]!.add(ing);
-      }
+      Map<String, dynamic> value = recipes[key];
+      String name = value['name'];
+      List<int> ingredientIds = List.from(value['ingredients']);
+      List<Ingredient> ingredients =
+          ingredientIds.map((s) => pantry.getItem(s)).toList();
+      List<String> recipe = List.from(value['recipe']);
+      int id = int.parse(key);
+      _data[id] = Recipe(id, name, ingredients, recipe);
     }
     _initialized = true;
   }
 
-  Set<String> getAllNames() {
-    return _data.keys.toSet();
+  Set<Recipe> getAll() {
+    return _data.values.toSet();
   }
 
-  List<String> getIngredients(String name) {
-    if (!_data.containsKey(name)) {
-      return [];
-    }
-    return _data[name]!;
+  Recipe getItem(int id) {
+    return _data[id]!;
   }
 }

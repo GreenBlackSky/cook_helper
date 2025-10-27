@@ -6,7 +6,7 @@ import "../shopping_list_tab/shopping_list.dart";
 import "../favorites/favorites.dart";
 
 class RecipeCard extends StatefulWidget {
-  final String recipe;
+  final Recipe recipe;
   final VoidCallback? onRemoved;
   const RecipeCard(this.recipe, {this.onRemoved, super.key});
 
@@ -21,10 +21,10 @@ class RecipeCard extends StatefulWidget {
 class _RecipeCardState extends State<RecipeCard> {
   void addRecipeToCart() {
     setState(() {
-      for (String ing in CookBook.instance.getIngredients(widget.recipe)) {
-        if (!Pantry.instance.inPantry(ing) &&
-            !ShoppingList.instance.inList(ing)) {
-          ShoppingList.instance.addToShoppingList(ing);
+      for (Ingredient ing in widget.recipe.ingredients) {
+        if (!Pantry.instance.inPantry(ing.id) &&
+            !ShoppingList.instance.inList(ing.id)) {
+          ShoppingList.instance.addToShoppingList(ing.id);
         }
       }
     });
@@ -32,42 +32,57 @@ class _RecipeCardState extends State<RecipeCard> {
 
   void changeFavoriteStatus() {
     setState(() {
-      if(Favorites.instance.inList(widget.recipe)) {
-        Favorites.instance.removeFromFavorites(widget.recipe);
+      if(Favorites.instance.inList(widget.recipe.id)) {
+        Favorites.instance.removeFromFavorites(widget.recipe.id);
         widget.onRemoved?.call();
       } else {
-        Favorites.instance.addToFavorites(widget.recipe);
+        Favorites.instance.addToFavorites(widget.recipe.id);
       }
     });
   }
 
   Widget getHeader() {
-    Color starColor = Favorites.instance.inList(widget.recipe) ? Colors.yellow : Colors.grey;
-    Color cartColor = ShoppingList.instance.inList(widget.recipe) ? Colors.blue : Colors.grey;
+    Color starColor = Favorites.instance.inList(widget.recipe.id) ? Colors.yellow : Colors.grey;
+    // Color cartColor = ShoppingList.instance.inList(widget.recipe) ? Colors.blue : Colors.grey;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(onPressed: changeFavoriteStatus, icon: Icon(Icons.star, color: starColor,)),
         Text(
-          widget.recipe,
+          widget.recipe.name,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        IconButton(onPressed: addRecipeToCart, icon: Icon(Icons.shopping_cart, color: cartColor)),
+        IconButton(onPressed: addRecipeToCart, icon: Icon(Icons.shopping_cart)),
       ],
     );
   }
 
   Widget getIngredients() {
     return Column(
-      children: CookBook.instance
-          .getIngredients(widget.recipe)
-          .map((entry) => IngredientCardSmall(entry))
+      children: widget.recipe.ingredients.map((entry) => IngredientCardSmall(entry))
           .toList(),
     );
   }
+
+List<Widget> getRecipeText() {
+  List<Widget> ret = [];
+  for(int i = 0; i < widget.recipe.recipe.length; i++) {
+    String line = widget.recipe.recipe[i];
+    ret.add(
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text("${i + 1}. $line"),
+        ),
+      )
+    );
+  }
+  return ret;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +94,8 @@ class _RecipeCardState extends State<RecipeCard> {
           child: ExpansionTile(
             title: getHeader(),
             subtitle: getIngredients(),
-            children: [Text("1"),Text("1"),Text("1")],
             showTrailingIcon: false,
+            children: getRecipeText(),
           ),
         ),
       ),

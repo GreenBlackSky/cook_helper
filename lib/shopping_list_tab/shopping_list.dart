@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ShoppingList {
-  Set<String> _data = {};
+  Set<int> _data = {};
   bool _initialized = false;
 
   ShoppingList._();
@@ -14,30 +14,32 @@ class ShoppingList {
     }
 
     final prefs = await SharedPreferences.getInstance();
-    _data = (prefs.getStringList('shopping_list') ?? []).toSet();
+    List<String> stringData = (prefs.getStringList('shopping_list') ?? []);
+    _data = stringData.map((s) => int.tryParse(s)!).toSet();
     _initialized = true;
   }
 
   Future<void> saveToPrefs() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.setStringList('shopping_list', _data.toList());
+    await pref.setStringList(
+        'shopping_list', _data.map((i) => i.toString()).toList());
   }
 
-  Set<String> getShoppingList() {
+  Set<int> getShoppingList() {
     return _data.toSet();
   }
 
-  bool inList(String name) {
-    return _data.contains(name);
+  bool inList(int id) {
+    return _data.contains(id);
   }
 
-  void addToShoppingList(String name) {
-    _data.add(name);
+  void addToShoppingList(int id) {
+    _data.add(id);
     saveToPrefs();
   }
 
-  void removeFromShoppingList(String name) {
-    _data.remove(name);
+  void removeFromShoppingList(int id) {
+    _data.remove(id);
     saveToPrefs();
   }
 

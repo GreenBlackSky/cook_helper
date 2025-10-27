@@ -3,7 +3,7 @@ import "../pantry_tab/pantry.dart";
 import "../shopping_list_tab/shopping_list.dart";
 
 class IngredientCardSmall extends StatefulWidget {
-  final String ingredient;
+  final Ingredient ingredient;
 
   const IngredientCardSmall(this.ingredient, {super.key});
 
@@ -12,10 +12,10 @@ class IngredientCardSmall extends StatefulWidget {
 }
 
 class _IngredientCardSmallState extends State<IngredientCardSmall> {
-  Widget getStatusIcon(String name) {
-    if (Pantry.instance.inPantry(name)) {
+  Widget getStatusIcon() {
+    if (Pantry.instance.inPantry(widget.ingredient.id)) {
       return const Icon(Icons.done, color: Colors.green);
-    } else if (ShoppingList.instance.inList(name)) {
+    } else if (ShoppingList.instance.inList(widget.ingredient.id)) {
       return const Icon(
         Icons.shopping_cart,
         color: Colors.blue,
@@ -42,10 +42,10 @@ class _IngredientCardSmallState extends State<IngredientCardSmall> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text(widget.ingredient),
+                    child: Text(widget.ingredient.name),
                   ),
                 ),
-                Expanded(child: getStatusIcon(widget.ingredient))
+                Expanded(child: getStatusIcon())
               ],
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Favorites {
-  Set<String> _data = {};
+  Set<int> _data = {};
   bool _initialized = false;
 
   Favorites._();
@@ -14,30 +14,31 @@ class Favorites {
     }
 
     final prefs = await SharedPreferences.getInstance();
-    _data = (prefs.getStringList('favorites') ?? []).toSet();
+    List<String> stringData = (prefs.getStringList('favorites') ?? []);
+    _data = stringData.map((s) => int.tryParse(s)!).toSet();
     _initialized = true;
   }
 
   Future<void> saveToPrefs() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.setStringList('favorites', _data.toList());
+    await pref.setStringList('favorites', _data.map((i) => i.toString()).toList());
   }
 
-  bool inList(String name) {
-    return _data.contains(name);
+  bool inList(int id) {
+    return _data.contains(id);
   }
 
-  Set<String> getFavorites() {
+  Set<int> getFavorites() {
     return _data.toSet();
   }
 
-  void addToFavorites(String name) {
-    _data.add(name);
+  void addToFavorites(int id) {
+    _data.add(id);
     saveToPrefs();
   }
 
-  void removeFromFavorites(String name) {
-    _data.remove(name);
+  void removeFromFavorites(int id) {
+    _data.remove(id);
     saveToPrefs();
   }
 }

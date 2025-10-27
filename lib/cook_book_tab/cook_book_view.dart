@@ -19,20 +19,19 @@ class CookBookView extends StatefulWidget {
 }
 
 class _CookBookViewState extends State<CookBookView> {
-  int haveIngredientsPercentage(String name) {
-    var ingredients = CookBook.instance.getIngredients(name);
-    int total = ingredients.length;
+  int haveIngredientsPercentage(Recipe recipe) {
+    int total = recipe.ingredients.length;
     int haveAtHome = 0;
-    for (String ing in ingredients) {
-      if (Pantry.instance.inPantry(ing)) {
+    for (Ingredient ing in recipe.ingredients) {
+      if (Pantry.instance.inPantry(ing.id)) {
         haveAtHome++;
       }
     }
     return ((haveAtHome / total) * 100).toInt();
   }
 
-  List<String> getRecipes() {
-    var recipes = CookBook.instance.getAllNames().toList();
+  List<Recipe> getRecipes() {
+    var recipes = CookBook.instance.getAll().toList();
     recipes.sort(
       (a, b) {
         return (haveIngredientsPercentage(b) - haveIngredientsPercentage(a));

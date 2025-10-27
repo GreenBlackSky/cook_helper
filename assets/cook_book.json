@@ -1,147 +1,518 @@
 {
-    "Oatmeal": [
-        "Oats",
-        "Milk",
-        "Peanut butter",
-        "Banana"
-    ],
-    "Omelette": [
-        "Eggs",
-        "Spinach",
-        "Milk",
-        "Feta"
-    ],
-    "Lentil & veggie stew": [
-        "Lentils",
-        "Onion",
-        "Carrots",
-        "Spinach",
-        "Canned tomatoes"
-    ],
-    "Baked potato with cheese": [
-        "Potatoes",
-        "Cottage cheese"
-    ],
-    "Chickpea curry": [
-        "Canned chickpeas",
-        "Coconut milk",
-        "Curry paste",
-        "Frozen mixed veg"
-    ],
-    "Buckwheat with Scrambled eggs, mushrooms": [
-        "Buckwheat",
-        "Eggs",
-        "Mushrooms"
-    ],
-    "Salad": [
-        "Tomatoes",
-        "Cucumbers",
-        "Peppers",
-        "Sour cream"
-    ],
-    "Quinoa": [
-        "Quinoa",
-        "Zucchini",
-        "Peppers",
-        "Carrots",
-        "Onion",
-        "Feta"
-    ],
-    "Pasta with lentil Bolognese": [
-        "Pasta",
-        "Canned lentils",
-        "Tomato sauce",
-        "Onion",
-        "Garlic"
-    ],
-    "Veggie burrito bowl": [
-        "Rice",
-        "Canned black beans",
-        "Canned corn",
-        "Salsa",
-        "Avocado",
-        "Cheese"
-    ],
-    "Greek salad": [
-        "Tomatoes",
-        "Cucumbers",
-        "Onion",
-        "Feta",
-        "Eggs",
-        "Olives"
-    ],
-    "Stewed Cabbage ": [
-        "Cabbage",
-        "Carrots",
-        "Peppers",
-        "Cottage cheese"
-    ],
-    "Cottage Cheese & Veggie Bowl": [
-        "Cottage cheese",
-        "Cherry tomatoes",
-        "Cucumbers"
-    ],
-    "Spinach & Ricotta Pasta": [
-        "Pasta",
-        "Frozen spinach",
-        "Ricotta"
-    ],
-    "Lentil & Tomato One-Pot": [
-        "Lentils",
-        "Canned tomatoes",
-        "Frozen mixed veg"
-    ],
-    "Egg & Veggie Stir-Fry":[
-        "Eggs",
-        "Frozen mixed veg",
-        "Soy sauce"
-    ],
-    "Quick Falafel Wrap": [
-        "Falafel",
-        "Tortilla",
-        "Hummus",
-        "Tomatoes",
-        "Cucumbers",
-        "Lettuce"
-    ],
-    "Potato & Bean Skillet": [
-        "Potatoes",
-        "Canned black beans",
-        "Onion"
-    ],
-    "Mushroom & Cheese Toasts": [
-        "Bread",
-        "Mushrooms",
-        "Cheese"
-    ],
-    "Bean & Corn Chili": [
-        "Canned black beans",
-        "Canned corn",
-        "Canned tomatoes",
-        "Onion"
-    ],
-    "Veggie Fried Rice with Egg": [
-        "Rice",
-        "Eggs",
-        "Frozen mixed veg",
-        "Soy sauce"
-    ],
-    "Garlic Butter Buckwheat with Broccoli": [
-        "Buckwheat",
-        "Broccoli",
-        "Garlic",
-        "Butter"
-    ],
-    "Eggplant & Tomato Rice Bowl": [
-        "Rice",
-        "Eggplant",
-        "Tomatoes",
-        "Balsamic vinegar"
-    ],
-    "Sweet Cottage Cheese Bowl": [
-        "Cottage cheese",
-        "Oats",
-        "Banana",
-        "Honey"
-    ]
+    "0": {
+        "name": "Oatmeal",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            34,
+            32
+        ],
+        "tags": [],
+        "tips": [2, 3, 4, 5],
+        "recipe": [
+            "Boil milk, add oats, cook 5 min"
+        ]
+    },
+    "1": {
+        "name": "Omelette",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            20,
+            32
+        ],
+        "tags": [],
+        "tips": [6, 7, 8],
+        "recipe": [
+            "Heat pan with olive oil",
+            "Whisk eggs with milk",
+            "pour in, cook 4-5 min"
+        ]
+    },
+    "2": {
+        "name": "Lentil & veggie stew",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            30,
+            36,
+            13,
+            46,
+            12
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Dice onion & carrot, fry in oil 3 min.",
+            "Add lentils + 500 ml water, simmer 10 min.",
+            "Add tomatoes + spinach, cook until thick (~10 min)."
+        ]
+    },
+    "3": {
+        "name": "Baked potato with cheese",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            40,
+            17
+        ],
+        "tags": [],
+        "tips": [1, 8, 9],
+        "recipe": [
+            "Dice potatoes",
+            "Mix with oil",
+            "Bake potatoes at 200°C for 40 min (or boil).",
+            "Serve potatoes with cottage cheese on top."
+        ]
+    },
+    "4": {
+        "name": "Chickpea curry",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            9,
+            16,
+            19,
+            24
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Cook rice separately.",
+            "Fry onion with oil, add curry paste.",
+            "Add chickpeas, veggies, coconut milk → simmer 10 min.",
+            "Serve with rice."
+        ]
+    },
+    "5": {
+        "name": "Buckwheat with eggs and mushrooms",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            5,
+            20,
+            33
+        ],
+        "tags": [],
+        "tips": [9],
+        "recipe": [
+            "Cook buckwheat (15 min).",
+            "Fry mushrooms with little oil, add eggs, scramble.",
+            "Serve with buckwheat."
+        ]
+    },
+    "6": {
+        "name": "Salad",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            47,
+            18,
+            39,
+            44
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Slice and dice veggies",
+            "Mix with sour-cream"
+        ]
+    },
+    "7": {
+        "name": "Quinoa",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            29,
+            50,
+            39,
+            13,
+            36,
+            23
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Cook quinoa (15 min).",
+            "Chop all veggies, toss with oil, roast 25 min at 200°C.",
+            "Mix quinoa + veggies, crumble feta on top."
+        ]
+    },
+    "8": {
+        "name": "Pasta with lentil Bolognese",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            37,
+            11,
+            48,
+            36,
+            26
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Cook pasta.",
+            "Fry onion + garlic in oil.",
+            "Add lentils + tomatoes + herbs → simmer 10 min.",
+            "Serve with pasta."
+        ]
+    },
+    "9": {
+        "name": "Veggie burrito bowl",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            41,
+            8,
+            10,
+            43,
+            0,
+            14
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Cook rice.",
+            "Mix beans, corn, salsa.",
+            "Top with avocado slices + cheese."
+        ]
+    },
+    "10": {
+        "name": "Greek salad",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            47,
+            18,
+            36,
+            23,
+            20,
+            35
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Chop veggies, add olives + feta.",
+            "Boil eggs 8 min, cut in half.",
+            "Serve with bread."
+        ]
+    },
+    "11": {
+        "name": "Stewed Cabbage ",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            7,
+            13,
+            39,
+            17
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": []
+    },
+    "12": {
+        "name": "Cottage Cheese & Veggie Bowl",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            17,
+            15,
+            18
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Chop veggies, drizzle olive oil.",
+            "Add cottage cheese, mix or serve separate.",
+            "Eat with bread."
+        ]
+    },
+    "13": {
+        "name": "Spinach & Ricotta Pasta",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            37,
+            25,
+            42
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Boil pasta.",
+            "Fry garlic in oil, add spinach, cook 3–4 min.",
+            "Mix in ricotta and pasta."
+        ]
+    },
+    "14": {
+        "name": "Lentil & Tomato One-Pot",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            30,
+            12,
+            24
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Combine all in pot with 400 ml water.",
+            "Simmer 20 min until soft."
+        ]
+    },
+    "15": {
+        "name": "Egg & Veggie Stir-Fry",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            20,
+            24,
+            45
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Fry veggies in oil 5–6 min.",
+            "Add eggs, scramble.",
+            "Drizzle soy sauce."
+        ]
+    },
+    "16": {
+        "name": "Quick Falafel Wrap",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            22,
+            49,
+            28,
+            47,
+            18,
+            31
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Heat falafel or chickpeas.",
+            "Fill tortilla with everything, wrap."
+        ]
+    },
+    "17": {
+        "name": "Potato & Bean Skillet",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            40,
+            8,
+            36
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Dice potatoes, fry 10 min.",
+            "Add onion and beans, cook 5 min more."
+        ]
+    },
+    "18": {
+        "name": "Mushroom & Cheese Toasts",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            3,
+            33,
+            14
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Fry mushrooms with garlic.",
+            "Put on toast, top with cheese.",
+            "Grill or toast until melted."
+        ]
+    },
+    "19": {
+        "name": "Bean & Corn Chili",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            8,
+            10,
+            12,
+            36
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Fry onion with oil.",
+            "Add rest, simmer 10 min."
+        ]
+    },
+    "20": {
+        "name": "Veggie Fried Rice with Egg",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            41,
+            20,
+            24,
+            45
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Fry veggies, add rice.",
+            "Push aside, crack eggs, scramble, mix all.",
+            "Add soy sauce."
+        ]
+    },
+    "21": {
+        "name": "Garlic Butter Buckwheat with Broccoli",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            5,
+            4,
+            26,
+            6
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Boil buckwheat.",
+            "Steam or boil broccoli.",
+            "Mix both with butter + garlic."
+        ]
+    },
+    "22": {
+        "name": "Eggplant & Tomato Rice Bowl",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            41,
+            21,
+            47,
+            1
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Dice and fry eggplant 8 min.",
+            "Add tomato and seasoning.",
+            "Mix with rice."
+        ]
+    },
+    "23": {
+        "name": "Sweet Cottage Cheese Bowl",
+        "cooking_time": "",
+        "portions": 2,
+        "kkal": 0,
+        "carbs": 0,
+        "fat": 0,
+        "protein": 0,
+        "ingredients": [
+            17,
+            34,
+            2,
+            27
+        ],
+        "tags": [],
+        "tips": [],
+        "recipe": [
+            "Mix everything in bowl.",
+            "Eat cold or microwave 1 min."
+        ]
+    }
 }

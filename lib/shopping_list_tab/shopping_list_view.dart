@@ -20,7 +20,7 @@ class _ShoppingListViewState extends State<ShoppingListView> {
 
   void buyList() {
     setState(() {
-      for (String item in Cart.instance.getItems()) {
+      for (int item in Cart.instance.getItems()) {
         if (!Pantry.instance.inPantry(item)) {
           Pantry.instance.addToPantry(item);
         }
@@ -30,9 +30,9 @@ class _ShoppingListViewState extends State<ShoppingListView> {
     });
   }
 
-  void removeCard(String name) {
+  void removeCard(int id) {
     setState(() {
-      ShoppingList.instance.removeFromShoppingList(name);
+      ShoppingList.instance.removeFromShoppingList(id);
     });
   }
 
@@ -59,12 +59,13 @@ class _ShoppingListViewState extends State<ShoppingListView> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: ShoppingList.instance.getShoppingList().map((entry) {
-              return ShoppingListCard(
-                entry,
-                removeCard,
-              );
-            }).toList(),
+            children: ShoppingList.instance
+                .getShoppingList()
+                .map((id) => ShoppingListCard(
+                      Pantry.instance.getItem(id),
+                      removeCard,
+                    ))
+                .toList(),
           ),
         ),
       ),

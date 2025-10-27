@@ -1,23 +1,23 @@
 class Cart {
-  final Set<String> _data = {};
+  final Set<int> _data = {};
 
   Cart._();
 
   static final instance = Cart._();
 
-  Set<String> getItems() {
+  Set<int> getItems() {
     return _data.toSet();
   }
 
-  bool inCart(String name) {
-    return _data.contains(name);
+  bool inCart(int id) {
+    return _data.contains(id);
   }
 
-  void addToCart(String name) {
-    _data.add(name);
+  void addToCart(int id) {
+    _data.add(id);
   }
 
-  void removeFromCart(String name) {
-    _data.remove(name);
+  void removeFromCart(int id) {
+    _data.remove(id);
   }
 }

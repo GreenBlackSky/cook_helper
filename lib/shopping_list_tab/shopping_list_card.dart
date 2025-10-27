@@ -1,10 +1,11 @@
+import 'package:cook_helper/pantry_tab/pantry.dart';
 import 'package:flutter/material.dart';
 import 'cart.dart';
 
 class ShoppingListCard extends StatefulWidget {
-  final String ingredient;
+  final Ingredient ingredient;
 
-  final void Function(String) removeSelf;
+  final void Function(int) removeSelf;
 
   const ShoppingListCard(this.ingredient, this.removeSelf, {super.key});
 
@@ -14,7 +15,7 @@ class ShoppingListCard extends StatefulWidget {
 
 class _ShoppingListCardState extends State<ShoppingListCard> {
   Widget getHaveAtHomeIcon() {
-    if (Cart.instance.inCart(widget.ingredient)) {
+    if (Cart.instance.inCart(widget.ingredient.id)) {
       return const Icon(Icons.shopping_cart, color: Colors.green);
     } else {
       return const Icon(
@@ -27,7 +28,7 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
   Widget getRemoveButton() {
     return IconButton(
       onPressed: () {
-        widget.removeSelf(widget.ingredient);
+        widget.removeSelf(widget.ingredient.id);
       },
       icon: const Icon(Icons.close),
     );
@@ -35,10 +36,10 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
 
   void changeCartState() {
     setState(() {
-      if (Cart.instance.inCart(widget.ingredient)) {
-        Cart.instance.removeFromCart(widget.ingredient);
+      if (Cart.instance.inCart(widget.ingredient.id)) {
+        Cart.instance.removeFromCart(widget.ingredient.id);
       } else {
-        Cart.instance.addToCart(widget.ingredient);
+        Cart.instance.addToCart(widget.ingredient.id);
       }
     });
   }
@@ -60,7 +61,7 @@ class _ShoppingListCardState extends State<ShoppingListCard> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text(widget.ingredient),
+                      child: Text(widget.ingredient.name),
                     ),
                   ),
                   Expanded(

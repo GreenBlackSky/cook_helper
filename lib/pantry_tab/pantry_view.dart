@@ -6,8 +6,6 @@ import 'pantry.dart';
 // TODO Add sorting button have/miss/all
 // TODO add search
 // TODO categories frozen/canned/etc
-// TODO factories
-// TODO common data holder class
 
 class PantryView extends StatefulWidget {
   const PantryView({super.key});
@@ -18,17 +16,18 @@ class PantryView extends StatefulWidget {
 
 class _PantryViewState extends State<PantryView> {
   Widget buildView() {
-    var names = Pantry.instance.getAllNames().toList();
-    names.sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    var items = Pantry.instance.getAllItems().toList();
+    items.sort();
+    // (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: names.map((entry) {
-              return IngredientCard(entry);
-            }).toList(),
+            children: items
+                .map((id) => IngredientCard(Pantry.instance.getItem(id)))
+                .toList(),
           ),
         ),
       ),
