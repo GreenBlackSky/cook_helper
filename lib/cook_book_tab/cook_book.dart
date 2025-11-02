@@ -6,13 +6,14 @@ import 'dart:convert';
 // TODO common data holder class
 // TODO separate static data classes and user data classes
 // TODO fromJson methods
+// TODO measures
 
 class Recipe {
   int id;
   String name;
   String cookingTime = "";
   int portions = 2;
-  double kkal = 0;
+  int kkal = 0;
   double carbs = 0;
   double fat = 0;
   double protein = 0;
@@ -21,7 +22,14 @@ class Recipe {
   List<String> tips = [];
   List<String> recipe;
 
-  Recipe(this.id, this.name, this.ingredients, this.recipe);
+  Recipe(
+    this.id,
+    this.name,
+    this.portions,
+    this.kkal,
+    this.ingredients,
+    this.recipe,
+  );
 }
 
 class CookBook {
@@ -46,12 +54,14 @@ class CookBook {
     for (String key in recipes.keys) {
       Map<String, dynamic> value = recipes[key];
       String name = value['name'];
+      int portions = value['portions'];
+      int kkal = value['kkal'];
       List<int> ingredientIds = List.from(value['ingredients']);
       List<Ingredient> ingredients =
           ingredientIds.map((s) => pantry.getItem(s)).toList();
       List<String> recipe = List.from(value['recipe']);
       int id = int.parse(key);
-      _data[id] = Recipe(id, name, ingredients, recipe);
+      _data[id] = Recipe(id, name, portions, kkal, ingredients, recipe);
     }
     _initialized = true;
   }

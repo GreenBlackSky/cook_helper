@@ -1,12 +1,12 @@
+import 'package:cook_helper/triicon.dart';
 import 'package:flutter/material.dart';
 import '../shopping_list_tab/shopping_list.dart';
 import 'ingredient_card.dart';
 import 'pantry.dart';
 
-// TODO add search
 // TODO categories frozen/canned/etc
 
-enum PantryFilter { have, miss, both }
+enum PantryFilter { have, miss, cart, both }
 
 class PantryView extends StatefulWidget {
   const PantryView({super.key});
@@ -17,18 +17,21 @@ class PantryView extends StatefulWidget {
 
 class _PantryViewState extends State<PantryView> {
   PantryFilter filter = PantryFilter.both;
+  String? searchFilter;
+  TextEditingController search = TextEditingController();
 
   Widget getFilterIcon() {
     if (filter == PantryFilter.have) {
       return const Icon(Icons.done);
     } else if (filter == PantryFilter.miss) {
       return const Icon(Icons.close);
+    } else if (filter == PantryFilter.cart) {
+      return const Icon(Icons.shopping_cart);
     }
-    return const Row(
-      children: [
-        Icon(Icons.done),
-        Icon(Icons.close)
-      ],
+    return const TriIcon(
+      icon1: Icons.done,
+      icon2: Icons.close,
+      icon3: Icons.shopping_cart,
     );
   }
 
@@ -46,15 +49,38 @@ class _PantryViewState extends State<PantryView> {
     );
   }
 
-  // Widget getSearchField() {
-  //   return const SizedBox(
-  //     width: double.infinity,
-  //     height: 40,
-  //     child: Center(
-  //       child: TextField(),
-  //     ),
-  //   );
-  // }
+  Widget getSearchField() {
+    return SizedBox(
+      width: double.infinity,
+      height: 40,
+      child: Center(
+        child: TextField(controller: search),
+      ),
+    );
+  }
+
+  Widget getSearchButton() {
+    if (searchFilter == null) {
+      return IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          setState(() {
+            searchFilter = search.value.text;
+          });
+        },
+      );
+    } else {
+      return IconButton(
+        icon: const Icon(Icons.close),
+        onPressed: () {
+          setState(() {
+            searchFilter = null;
+            search.clear();
+          });
+        },
+      );
+    }
+  }
 
   Widget buildView() {
     var items = Pantry.instance.getAllItems().toList();
@@ -62,20 +88,25 @@ class _PantryViewState extends State<PantryView> {
       items = items.where((id) => Pantry.instance.inPantry(id)).toList();
     } else if (filter == PantryFilter.miss) {
       items = items.where((id) => !Pantry.instance.inPantry(id)).toList();
+    } else if (filter == PantryFilter.cart) {
+      items = items.where((id) => ShoppingList.instance.inList(id)).toList();
+    }
+    if (searchFilter != null) {
+      items = items
+          .where((id) => Pantry.instance
+              .getItem(id)
+              .name
+              .toLowerCase()
+              .contains(searchFilter!.toLowerCase()))
+          .toList();
     }
     items.sort();
     // (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
     return Scaffold(
       appBar: AppBar(
-        // title: getSearchField(),
-        actions: [
-        // IconButton(
-        //   icon: const Icon(Icons.search),
-        //   onPressed: () {},
-        // ),
-        getFilterButton()
-      ]),
+          title: getSearchField(),
+          actions: [getSearchButton(), getFilterButton()]),
       body: Center(
         child: SingleChildScrollView(
           child: Column(

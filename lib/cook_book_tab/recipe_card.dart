@@ -14,8 +14,9 @@ class RecipeCard extends StatefulWidget {
   State<RecipeCard> createState() => _RecipeCardState();
 }
 
-// TODO add cooking time and macro
-// TODO unfold into instructions
+// TODO add cooking time
+// TODO add buttons for portions (after adding measures)
+// TODO add full macro
 // TODO tips
 
 class _RecipeCardState extends State<RecipeCard> {
@@ -32,7 +33,7 @@ class _RecipeCardState extends State<RecipeCard> {
 
   void changeFavoriteStatus() {
     setState(() {
-      if(Favorites.instance.inList(widget.recipe.id)) {
+      if (Favorites.instance.inList(widget.recipe.id)) {
         Favorites.instance.removeFromFavorites(widget.recipe.id);
         widget.onRemoved?.call();
       } else {
@@ -42,47 +43,105 @@ class _RecipeCardState extends State<RecipeCard> {
   }
 
   Widget getHeader() {
-    Color starColor = Favorites.instance.inList(widget.recipe.id) ? Colors.yellow : Colors.grey;
-    // Color cartColor = ShoppingList.instance.inList(widget.recipe) ? Colors.blue : Colors.grey;
+    Color starColor = Favorites.instance.inList(widget.recipe.id)
+        ? Colors.yellow
+        : Colors.grey;
+    int total = widget.recipe.ingredients.length;
+    int haveAtHome = 0;
+    int inShoppigList = 0;
+    for (Ingredient ing in widget.recipe.ingredients) {
+      if (Pantry.instance.inPantry(ing.id)) {
+        haveAtHome++;
+      }
+      if (ShoppingList.instance.inList(ing.id)) {
+        inShoppigList++;
+      }
+    }
+
+    Color cartColor =
+        (total != haveAtHome && total == haveAtHome + inShoppigList)
+            ? Colors.blue
+            : Colors.grey;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        IconButton(onPressed: changeFavoriteStatus, icon: Icon(Icons.star, color: starColor,)),
-        Text(
-          widget.recipe.name,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+        IconButton(
+          onPressed: changeFavoriteStatus,
+          icon: Icon(
+            Icons.star,
+            color: starColor,
           ),
         ),
-        IconButton(onPressed: addRecipeToCart, icon: Icon(Icons.shopping_cart)),
+        Expanded(
+          child: Text(
+            softWrap: true,
+            overflow: TextOverflow.visible,
+            widget.recipe.name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
+          ),
+        ),
+        IconButton(
+          onPressed: addRecipeToCart,
+          icon: Icon(Icons.shopping_cart, color: cartColor),
+        ),
+      ],
+    );
+  }
+
+  Widget getDescription() {
+    int total = widget.recipe.ingredients.length;
+    int haveAtHome = 0;
+    for (Ingredient ing in widget.recipe.ingredients) {
+      if (Pantry.instance.inPantry(ing.id)) {
+        haveAtHome++;
+      }
+    }
+    Color color = total == haveAtHome ? Colors.green : Colors.red;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Text(widget.recipe.portions.toString(),
+                style: const TextStyle(fontSize: 24)),
+            const Icon(Icons.restaurant)
+          ],
+        ),
+        Text("$haveAtHome / $total",
+            style: TextStyle(fontSize: 24, color: color)),
+        Text("${widget.recipe.kkal} kkal")
       ],
     );
   }
 
   Widget getIngredients() {
     return Column(
-      children: widget.recipe.ingredients.map((entry) => IngredientCardSmall(entry))
+      children: widget.recipe.ingredients
+          .map((entry) => IngredientCardSmall(entry))
           .toList(),
     );
   }
 
-List<Widget> getRecipeText() {
-  List<Widget> ret = [];
-  for(int i = 0; i < widget.recipe.recipe.length; i++) {
-    String line = widget.recipe.recipe[i];
-    ret.add(
-      Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("${i + 1}. $line"),
+  Widget getRecipeText() {
+    List<Widget> ret = [];
+    for (int i = 0; i < widget.recipe.recipe.length; i++) {
+      String line = widget.recipe.recipe[i];
+      ret.add(
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("${i + 1}. $line"),
+          ),
         ),
-      )
-    );
+      );
+    }
+    return Column(children: ret);
   }
-  return ret;
-}
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +152,9 @@ List<Widget> getRecipeText() {
           width: 500,
           child: ExpansionTile(
             title: getHeader(),
-            subtitle: getIngredients(),
+            subtitle: getDescription(),
             showTrailingIcon: false,
-            children: getRecipeText(),
+            children: [getIngredients(), getRecipeText()],
           ),
         ),
       ),
