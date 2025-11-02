@@ -49,10 +49,7 @@ class _IngredientCardState extends State<IngredientCard> {
     if (Pantry.instance.inPantry(widget.ingredient.id)) {
       icon = const Icon(Icons.done, color: Colors.green);
     } else {
-      icon = const Icon(
-        Icons.close,
-        color: Colors.red,
-      );
+      icon = const Icon(Icons.close, color: Colors.red);
     }
     return IconButton(
       onPressed: () {
